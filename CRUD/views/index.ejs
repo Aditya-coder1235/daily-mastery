@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>All Users</h2>
+    <div style="display: flex; gap: 8px;">
+
+        <% for(let user of users){ %>
+            <div style="border: 1px solid black; padding: 8px;">
+                <span>
+                    <b>Username:-</b>
+                    <%= user.username %>
+                </span><br>
+                <span>
+                    <b>Email:-</b>
+                    <%= user.email %>
+                </span><br>
+                <span>
+                    <b>Password:-</b>
+                    <%= user.password %>
+                </span>
+                <br>
+                <form action="/createuser/users/<%= user._id %>" method="get">
+                    <button>ViewFull</button>
+                </form>
+                <form action="/delete/<%= user.id %>?_method=DELETE" method="post">
+                    <button>Delete</button>
+                </form>
+            </div>
+
+            <% } %>
+    </div>
+    <a href="/createuser">Create More Users</a>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Create User</h3>
+    <br>
+    <hr>
+    <form action="/create" method="post">
+        <input type="text" name="username" placeholder="username">
+        <br>
+        <br>
+        <input type="email" name="email" placeholder="email">
+        <br>
+        <br>
+        <input type="password" name="password" placeholder="password">
+        <br>
+        <br>
+        <button>Add</button>
+    </form>
+    <br><br>
+    <hr>
+    <form action="/createuser/users" method="get">
+        <button>View All Users</button>
+    </form>
+</body>
+</html>

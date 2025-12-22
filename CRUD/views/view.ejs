@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>View in detail</h3>
+    <div style="display: flex;">
+    <div style="border: 1px solid black; padding: 8px;">
+        <span>
+            <b>Username:-</b>
+            <%= user.username %>
+        </span><br>
+        <span>
+            <b>Email:-</b>
+            <%= user.email %>
+        </span><br>
+        <span>
+            <b>Password:-</b>
+            <%= user.password %>
+        </span>
+        <br>
+        <form action="/update/<%= user.id %>" method="get">
+            <button>Update</button>
+        </form>
+        
+    </div>
+    </div>
+</body>
+</html>
