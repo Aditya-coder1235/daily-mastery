@@ -9,7 +9,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRETE,
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
     })
