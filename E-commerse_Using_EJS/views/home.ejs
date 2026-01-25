@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <nav>
+            <div>
+                <img src="/images/logo.jpg" alt="" class="img">
+            </div>
+            <div>
+                <input type="text" class="inp" placeholder="search products.....">
+            </div>
+            <div class="a-div">
+                <a href="/">Home</a>
+            
+                <% if (user && user.role==='seller' ) { %>
+                    <a href="/upload">Upload</a>
+                    <% } %>
+            
+                        <% if (!user) { %>
+                            <a href="/signup">Signup</a>
+                            <a href="/login">Login</a>
+                            <% } %>
+            
+                                <% if (user) { %>
+                                    <form action="/logout" method="POST">
+                                        <button type="submit">Logout</button>
+                                    </form>
+                                    <% } %>
+            </div>
+
+        </nav>
+
+
+
+        <main>
+            <% if (user) { %>
+                <h2>Welcome, <%= user.email %> 👋</h2>
+                <% } else { %>
+                    <h2>Welcome, Guest</h2>
+                    <% } %>
+
+
+
+
+                <div class="product-grid" style="cursor: pointer;">
+                    <% for (let product of allProducts) { %>
+                        <a href="/product/<%= product._id %>">
+                        <div class="product-card">
+                            <h3 class="product-name">
+                                <%= product.name %>
+                            </h3>
+                
+                            <p class="product-description">
+                                <%= product.description %>
+                            </p>
+                
+                            <div class="product-footer">
+                                <span class="product-price">₹<%= product.price %></span>
+                                <span class="product-owner">
+                                    by <%= product.owner.name %>
+                                </span>
+                            </div>
+                        </div>
+                        </a>
+                        <% } %>
+                </div>
+
+
+        </main>
+
+        <footer>
+
+        </footer>
+    </div>
+</body>
+</html>

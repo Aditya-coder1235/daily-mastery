@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= product.name %>
+    </title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <div class="product-detail-wrapper">
+        <a href="/">Go back</a>
+        <div class="product-detail-card">
+
+            <h1 class="product-title">
+                <%= product.name %>
+            </h1>
+
+            <p class="product-desc">
+                <%= product.description %>
+            </p>
+
+            <div class="product-price">
+                ₹<%= product.price %>
+            </div>
+
+            
+            <% if(user.id===product.owner._id.toString()) { %>
+                <div class="product-actions">
+                    <form action="/update/<%= product._id %>" method="get" class="buy-btn">
+                        <button class="buy-btn">Update</button>
+                    </form>
+            
+                    <form action="/deleteProduct/<%= product._id %>?_method=DELETE" method="POST" class="cart-btn">
+                        <button class="cart-btn">Delete</button>
+                    </form>
+                </div>
+                <% } %>
+
+            
+
+        </div>
+    </div>
+
+</body>
+
+</html>
