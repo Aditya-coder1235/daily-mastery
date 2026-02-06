@@ -1,0 +1,6 @@
+{
+  "name":"Shirt",
+  "description":"best shirt for men",
+  "price":"120",
+  "category":"clothes"
+}
