@@ -22,7 +22,15 @@ const userSchema=new mongoose.Schema({
         required:true,
         enum:['seller','user'],
         default:'user'
-    }
+    },
+    cart: [
+        {
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product",
+            }
+        }
+    ]
 });
 
 const User=mongoose.model('User',userSchema)

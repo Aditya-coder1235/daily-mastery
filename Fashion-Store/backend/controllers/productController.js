@@ -5,11 +5,15 @@ exports.createProduct = async (req, res) => {
     try {
         let { name, description, category, price } = req.body;
 
-        if (!name || !description || !category || !price) {
+        let image=req.file;
+
+        if (!name || !description || !category || !price || !image) {
             return res.status(400).json({ message: "All fields are required!" });
         }
 
-        const newProduct = new Product({ name, description, category, price, owner: req.user.id })
+        const imageUrl=`/uploads/${image.filename}`
+
+        const newProduct = new Product({ name, description, category, price, owner: req.user.id,image:imageUrl })
 
         await newProduct.save()
 
