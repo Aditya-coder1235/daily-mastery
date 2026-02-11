@@ -21,7 +21,7 @@ const ProductAfterFil = () => {
                         >
                             <div className="w-full h-56 overflow-hidden">
                                 <img
-                                    src={product.image}
+                                    src={`http://localhost:8080${product.image}`}
                                     alt={product.name}
                                     className="w-full h-full object-cover hover:scale-105 transition duration-300"
                                 />

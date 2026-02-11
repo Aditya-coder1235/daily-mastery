@@ -1,19 +1,33 @@
 import React, { useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 // import { useNavigate } from "react-router";
 
 const CreateProduct = () => {
-    // const navigate=useNavigate()
-    const [formData, setFormData] = useState({
-        name: "",
-        description: "",
-        category: "formal",
-        price: "",
-    });
+    // // const navigate=useNavigate()
+    // const [formData, setFormData] = useState({
+    //     name: "",
+    //     description: "",
+    //     category: "formal",
+    //     price: "",
+    // });
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [category, setCategory] = useState("formal");
+    const [price, SetPrice] = useState("");
+    const [image, setImage] = useState(null);
 
     const [error, setError] = useState("");
 
     const createProduct = async () => {
+
+        const formData=new FormData()
+        formData.append("name",name)
+        formData.append("description", description);
+        formData.append("category", category);
+        formData.append("price", price);
+        formData.append("image", image);
+
+
         try {
             let res = await axios.post(
                 "http://localhost:8080/api/product/create",
@@ -24,30 +38,32 @@ const CreateProduct = () => {
             );
 
             // navigate("/");
-            console.log(res.data)
+            // console.log(res.data);
+            setName("")
+            setDescription("")
+            setImage(null)
+            SetPrice("")
+            setCategory("")
         } catch (error) {
             console.error("Creating Error", error.response?.data?.message);
-            setError(
-                error.response?.data?.message || "Something went wrong",
-            );
+            setError(error.response?.data?.message || "Something went wrong");
         }
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData({ ...formData, [name]: value });
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // console.log(formData);
-        createProduct()
+        createProduct();
         // setFormData("")
-
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 pt-5 pb-5">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg"
@@ -63,8 +79,8 @@ const CreateProduct = () => {
                     <input
                         type="text"
                         name="name"
-                        value={formData.name}
-                        onChange={handleChange}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                         placeholder="Enter product name"
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
@@ -77,12 +93,27 @@ const CreateProduct = () => {
                     </label>
                     <textarea
                         name="description"
-                        value={formData.description}
-                        onChange={handleChange}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                         required
                         rows="3"
                         placeholder="Enter product description"
                         className="w-full px-4 py-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    />
+                </div>
+
+                <div className="mb-6">
+                    <label className="block text-sm font-medium mb-1">
+                        Image
+                    </label>
+                    <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={(e) => setImage(e.target.files[0])}
+                        required
+                        className="w-full px-4 py-2 border rounded-md 
+               focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     />
                 </div>
 
@@ -92,8 +123,8 @@ const CreateProduct = () => {
                     </label>
                     <select
                         name="category"
-                        value={formData.category}
-                        onChange={handleChange}
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     >
                         <option value="formal">Formal</option>
@@ -110,16 +141,16 @@ const CreateProduct = () => {
                     <input
                         type="number"
                         name="price"
-                        value={formData.price}
-                        onChange={handleChange}
+                        value={price}
+                        onChange={(e) => SetPrice(e.target.value)}
                         required
                         placeholder="Enter price"
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                     />
                 </div>
-                {
-                    error && <p className="text-red-600 font-semibold mb-3">{error}</p>
-                }
+                {error && (
+                    <p className="text-red-600 font-semibold mb-3">{error}</p>
+                )}
 
                 <button
                     type="submit"

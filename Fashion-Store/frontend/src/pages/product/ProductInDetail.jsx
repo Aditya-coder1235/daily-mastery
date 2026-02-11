@@ -75,6 +75,20 @@ const ProductInDetail = () => {
         }
     };
 
+    const addToCart = async (productId) => {
+        try {
+            const res = await axios.post(
+                `http://localhost:8080/api/cart/add/`,
+                 {productId} ,
+                {withCredentials:true}
+            );
+            // setReview(res.data.reviews);
+            console.log(res.data);
+        } catch (err) {
+            console.error("Creating review error", err);
+        }
+    };
+
     // const handleOnChange = (e) => {
     //     let { name, value } = e.target;
     //     setFormData({
@@ -109,7 +123,7 @@ const ProductInDetail = () => {
             <div className="max-w-6xl mx-auto p-10 grid grid-cols-2 gap-10">
                 <div className="w-full h-112.5 rounded-xl overflow-hidden">
                     <img
-                        src={product.image}
+                        src={`http://localhost:8080${product.image}`}
                         alt={product.name}
                         className="w-full h-full object-cover"
                     />
@@ -138,7 +152,7 @@ const ProductInDetail = () => {
                         )}
                     </div>
 
-                    <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition">
+                    <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition" onClick={()=>addToCart(product._id)}>
                         Add to Cart
                     </button>
                 </div>

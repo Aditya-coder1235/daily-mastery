@@ -1,141 +1,26 @@
-// import React from "react";
-// import {useDispatch,useSelector} from 'react-redux'
-// import { fetchAllProducts } from "../features/productSlice";
-// import { useEffect } from "react";
-// import ProductCard from "../components/ProductCard";
-
-// const Dashboard = () => {
-//     const dispatch=useDispatch()
-
-//     const {products,loading,error}=useSelector((state)=>state.product)
-
-//     // console.log(products)
-
-//     useEffect(()=>{
-//         dispatch(fetchAllProducts())
-//     },[])
-
-//     return (
-//         <div>
-//             <div className="min-h-screen bg-gray-100">
-//                 <div
-//                     className="h-150 w-351 bg-cover"
-//                     style={{
-//                         backgroundImage: "url('/public/dashboard.png')",
-//                     }}
-//                 >
-//                     <div className="flex flex-col gap-5 pt-20 pl-20">
-//                         <h2 className="text-5xl font-extrabold">
-//                             FIND CLOTHES <br />
-//                             THAT MATCHES <br />
-//                             YOUR STYLE <br />
-//                         </h2>
-//                         <p className="opacity-35 text-sm">
-//                             Browse through our diverse range of meticulously
-//                             crafted garments, designed <br /> to bring out your
-//                             individuality and cater to your sense of style.
-//                         </p>
-
-//                         <button className="bg-black text-white px-10 py-2 rounded-3xl w-40">
-//                             Shop Now
-//                         </button>
-
-//                         <div className="flex gap-10 mt-9">
-//                             <div>
-//                                 <h2 className="text-4xl font-bold">200+</h2>
-//                                 <p className="text-sm opacity-65">
-//                                     International Brands
-//                                 </p>
-//                             </div>
-//                             <div>
-//                                 <h2 className="text-4xl font-bold">2,000+</h2>
-//                                 <p className="text-sm opacity-65">
-//                                     High-Quality Products
-//                                 </p>
-//                             </div>
-//                             <div>
-//                                 <h2 className="text-4xl font-bold">30,000+</h2>
-//                                 <p className="text-sm opacity-65">
-//                                     Happy Customer
-//                                 </p>
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-
-//                 <div>
-//                     <img src="/brand.png" alt="" className="w-full mb-" />
-//                 </div>
-//             </div>
-
-//             <div>
-//                 <div>
-//                     <h2 className="text-center text-3xl font-bold mt-10">
-//                         ALL CLOTHES
-//                     </h2>
-//                     <p className="w-full border-b mt-3"></p>
-//                 </div>
-
-//                 <div className="flex gap-30 justify-around flex-wrap">
-//                     {
-//                         products && products.map((product)=>{
-//                             return <ProductCard product={product}/>
-//                         })
-//                     }
-//                 </div>
-//             </div>
-
-//             <div className="h-130 w-230 bg-gray-200 rounded-4xl ms-50 flex flex-col items-center gap-5 justify-center m-10">
-//                 <h2 className="text-3xl font-bold">BROWSE BY DRESS STYLE</h2>
-
-//                 <div className="flex gap-4">
-//                     <div className="w-70 h-40 bg-white rounded-2xl">
-//                         <h3>Casual</h3>
-//                     </div>
-//                     <div className="w-100 h-40 bg-white rounded-2xl">
-//                         <h3>Formal</h3>
-//                     </div>
-//                 </div>
-//                 <div className="flex gap-4">
-//                     <div className="w-100 h-40 bg-white rounded-2xl">
-//                         <h3>Party</h3>
-//                     </div>
-//                     <div className="w-70 h-40 bg-white rounded-2xl">
-//                         <h3>Gym</h3>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Dashboard;
-
-
-
-
-
-
-
-
-
-
-
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../features/productSlice";
 import ProductCard from "../components/ProductCard";
 import { filterByCate } from "../features/productSlice";
 import { useNavigate } from "react-router";
+// import { ShopContext } from "../context/shopContext";
+import { useContext } from "react";
+import { ShopContext } from "../context/shopContext";
 
 const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate=useNavigate()
     const { products, loading, error } = useSelector((state) => state.product);
 
+
+const shopRef = useContext(ShopContext);
     useEffect(() => {
         dispatch(fetchAllProducts());
     }, []);
+
+    // console.log(products)
+
 
     return (
         <div>
@@ -159,7 +44,14 @@ const Dashboard = () => {
                             individuality and cater to your sense of style.
                         </p>
 
-                        <button className="bg-black text-white px-10 py-2 rounded-3xl w-40">
+                        <button
+                            onClick={() =>
+                                shopRef.current?.scrollIntoView({
+                                    behavior: "smooth",
+                                })
+                            }
+                            className="bg-black text-white px-10 py-2 rounded-3xl w-40"
+                        >
                             Shop Now
                         </button>
 
@@ -189,7 +81,7 @@ const Dashboard = () => {
                 <img src="/brand.png" alt="Brands" className="w-full" />
             </div>
 
-            <div className="px-6 lg:px-16 mt-10">
+            <div ref={shopRef} className="px-6 lg:px-16 mt-10">
                 <h2 className="text-center text-3xl font-bold">ALL CLOTHES</h2>
                 <div className="border-b mt-3 mb-8"></div>
 
