@@ -10,6 +10,10 @@ import ProductInDetail from './pages/product/ProductInDetail';
 import ProductAfterFil from './pages/product/ProductAfterFil';
 import Cart from './pages/cart/Cart';
 import { ShopContext } from './context/shopContext';
+import ManageProducts from './pages/product/ManageProducts';
+import UpdateProduct from './pages/product/UpdateProduct';
+import ProtectedRoute from './ProtectedRoute.jsx/ProtectedRoute';
+import SellerRoute from './ProtectedRoute.jsx/SellerRoute';
 
 const App = () => {
     const shopRef = useRef(null);
@@ -20,10 +24,18 @@ const App = () => {
               <Route path="/" element={<Dashboard />}></Route>
               <Route path="/signup" element={<Signup />}></Route>
               <Route path="login" element={<Login />}></Route>
-              <Route path="/create" element={<CreateProduct />}></Route>
+
               <Route path="/product/:id" element={<ProductInDetail />}></Route>
               <Route path="/filter" element={<ProductAfterFil />}></Route>
-              <Route path="/cart" element={<Cart/>}></Route>
+              <Route element={<ProtectedRoute />}>
+                  <Route path="/cart" element={<Cart />}></Route>
+                  <Route path="/manage" element={<ManageProducts />}></Route>
+              </Route>
+
+              <Route element={<SellerRoute />}>
+                  <Route path="/create" element={<CreateProduct />}></Route>
+                  <Route path="/update/:id" element={<UpdateProduct />}></Route>
+              </Route>
           </Routes>
           <Footer />
       </ShopContext.Provider>

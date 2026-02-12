@@ -18,7 +18,7 @@ const productSlice = createSlice({
     name: 'Product',
     initialState: {
         allProducts: [],
-        productsForFil:[],
+        productsForFil: [],
         products: [],
         loading: false,
         error: ''
@@ -30,7 +30,24 @@ const productSlice = createSlice({
             state.productsForFil = state.allProducts.filter((product) =>
                 product.category === search
             )
+        },
+        filterForSearch: (state, action) => {
+            const search = action.payload.toLowerCase().trim();
+
+            if (search === "") {
+                state.products = state.allProducts;
+                state.productsForFil = state.allProducts;
+            } else {
+                const filtered = state.productsForFil.filter(product =>
+                    product.name.toLowerCase().includes(search)
+                );
+
+                state.products = filtered;
+                state.productsForFil = filtered;
+            }
         }
+
+
     },
     extraReducers: (builder) => {
         builder.addCase(fetchAllProducts.pending, (state) => {
@@ -40,12 +57,12 @@ const productSlice = createSlice({
             state.loading = false
             state.allProducts = action.payload
             state.products = action.payload
-            state.productsForFil=action.payload
+            state.productsForFil = action.payload
         }).addCase(fetchAllProducts.rejected, (state, action) => {
             state.error = action.payload
         })
     }
 })
 
-export const {filterByCate}=productSlice.actions
+export const { filterByCate, filterForSearch } = productSlice.actions
 export default productSlice.reducer

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ShoppingCart } from "lucide-react";
 import { CirclePlus } from "lucide-react";
@@ -6,11 +6,17 @@ import { CirclePlus } from "lucide-react";
 import axios from "axios";
 import { useContext } from "react";
 import { ShopContext } from "../context/shopContext";
+import { filterForSearch } from "../features/productSlice";
+import { useDispatch } from "react-redux";
+import { ChartNoAxesGantt } from "lucide-react";
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const dispatch=useDispatch()
 
     const shop=useContext(ShopContext)
+
+    const[text,setText]=useState("")
 
     const logoutUser = async () => {
         try {
@@ -31,7 +37,12 @@ const Navbar = () => {
         }
     };
 
-    const user = localStorage.getItem("userId");
+    const handleOnChange=(e)=>{
+        setText(e.target.value)
+        dispatch(filterForSearch(e.target.value));
+    }
+
+    const userId = localStorage.getItem("userId");
     const role = localStorage.getItem("role");
 
     const isSeller = role === "seller";
@@ -53,7 +64,7 @@ const Navbar = () => {
                     Shop
                 </button>
                 <Link>Brands</Link>
-                {user ? (
+                {userId ? (
                     <button onClick={() => logoutUser()}>Logout</button>
                 ) : (
                     <div className="flex gap-5">
@@ -66,6 +77,8 @@ const Navbar = () => {
                 <input
                     type="text"
                     placeholder="Search for Products....."
+                    value={text}
+                    onChange={handleOnChange}
                     className="bg-gray-200 outline-none border-none w-100 h-10 ps-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
             </div>
@@ -86,6 +99,13 @@ const Navbar = () => {
         }`}
                 >
                     <CirclePlus /> <p className="text-xs">Add Product</p>
+                </button>
+
+                <button className="flex items-center" disabled={!isSeller} onClick={()=>navigate('/manage')}>
+                    <p className="text-xs">
+                        <ChartNoAxesGantt />{" "}
+                    </p>
+                    <span className="text-xs">Manage Products</span>
                 </button>
             </div>
         </nav>

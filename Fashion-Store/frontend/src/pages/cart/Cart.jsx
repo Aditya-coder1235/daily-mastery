@@ -7,10 +7,9 @@ const Cart = () => {
 
     const fetchCart = async () => {
         try {
-            const res = await axios.get(
-                "http://localhost:8080/api/cart/get",
-                { withCredentials: true }, 
-            );
+            const res = await axios.get("http://localhost:8080/api/cart/get", {
+                withCredentials: true,
+            });
             setCart(res.data.cart);
         } catch (err) {
             console.error("Fetch cart error", err);
@@ -19,12 +18,12 @@ const Cart = () => {
 
     const removeFromCart = async (productId) => {
         try {
-            let res=await axios.delete(
+            let res = await axios.delete(
                 `http://localhost:8080/api/cart/remove/${productId}`,
                 { withCredentials: true },
             );
-            console.log(res.data)
-            fetchCart(); 
+            console.log(res.data);
+            fetchCart();
         } catch (err) {
             console.error("Remove cart error", err);
         }
@@ -42,11 +41,14 @@ const Cart = () => {
         }
     };
 
-
-
     useEffect(() => {
         fetchCart();
     }, []);
+
+    const subtotal = cart.reduce((sum, item) => sum + item.product.price, 0);
+    // console.log(subtotal)
+    const discount = subtotal >= 2000 ? subtotal * 0.1 : 0;
+    const total = subtotal - discount;
 
     return (
         <div className="max-w-5xl mx-auto p-10 flex gap-5">
@@ -102,11 +104,45 @@ const Cart = () => {
                 </button>
             </div>
 
-            <div className="border w-full rounded-2xl h-90 mt-14">
-                {/* payment */}
-                <div>
-                    <h2 className="text-xl text-center font-semibold">Order Summary</h2>
+            <div className="border w-full rounded-2xl h-fit mt-14 p-6">
+                <h2 className="text-xl text-center font-semibold mb-6">
+                    Order Summary
+                </h2>
+
+                <div className="flex justify-between mb-3 text-gray-700">
+                    <span>Subtotal</span>
+                    <span>₹{subtotal}</span>
                 </div>
+
+                <div className="flex justify-between mb-3 text-green-600">
+                    <span>Offer (10% OFF)</span>
+                    <span>- ₹{discount}</span>
+                </div>
+
+                <hr className="my-4" />
+
+                <div className="flex justify-between text-lg font-bold mb-6">
+                    <span>Total</span>
+                    <span>₹{total}</span>
+                </div>
+
+                <button
+                    disabled={cart.length === 0}
+                    className={`w-full py-3 rounded-lg font-semibold transition
+            ${
+                cart.length === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-yellow-400 hover:bg-yellow-500"
+            }`}
+                >
+                    Proceed to Checkout
+                </button>
+
+                {subtotal < 2000 && cart.length > 0 && (
+                    <p className="text-sm text-center text-gray-500 mt-4">
+                        Add items worth ₹{2000 - subtotal} more to get 10% OFF
+                    </p>
+                )}
             </div>
         </div>
     );
